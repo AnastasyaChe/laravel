@@ -6,9 +6,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [NewsController::class, 'index'])
+->name('home');
+
 Route::get('/news/show/{id}', [NewsController::class, 'show'])
 ->where('id', '\d+')
 ->name('news.show');
@@ -24,14 +24,17 @@ Route::get('/categories/show/{id}', [CategoryController::class, 'show'])
 
 Route::group(['prefix' => '/admin', 'as' => 'admin.'], 
     function() {
-    Route::resource('/categories', AdminCategoryController::class); // это стр со списком категорий новостей
+    Route::resource('/categories', AdminCategoryController::class);
+         
     Route::resource('/news', AdminNewsController::class)
     ->names([
         'index' => 'news.index',
         'store' => 'news.store',
         'create' => 'news.create'
-    ]); // это стр списка новостей в админке
+    ]); 
 });
+
+
 
 
    

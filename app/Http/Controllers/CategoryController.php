@@ -13,7 +13,7 @@ class CategoryController extends Controller
         $newsOfCategory = [];
         foreach($this->newsList as $id =>$news) {
             if ($news['categoryId'] == $categoryid) {
-                $newsOfCategory[] = $news;
+                $newsOfCategory[$id] = $news;
             }
         }
          return view('categoryShow', ['news' => $newsOfCategory]);

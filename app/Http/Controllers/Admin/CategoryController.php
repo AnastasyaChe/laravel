@@ -10,12 +10,12 @@ class CategoryController extends Controller
     
     public function index()
     {
-        return "<h2>Список в админке категорий новостей</h2>";
+        return view('admin.news.categories.index', ['categoryList' => $this->categoryList]);
     }
 
     public function create()
     {
-        return "<h2>Создаем в админке категорию</h2>";
+        //
     }
 
     public function store(Request $request)
@@ -23,9 +23,16 @@ class CategoryController extends Controller
         //
     }
 
-    public function show(int $id)
+    public function show(int $category)
     {
-        return "<h2>Показываем в админке список статей по категории с ID = {$id}</h2>";
+            $newsOfCategory = [];
+            foreach($this->newsList as $id =>$news) {
+                if ($news['categoryId'] == $category) {
+                    $newsOfCategory[$id] = $news;
+                }
+            }
+                     
+        return view('admin.news.categories.show', ['news' => $newsOfCategory]);
     }
 
     public function edit(int $id)

@@ -14,7 +14,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('adminkaNews', ['newsList' => $this->newsList]);
+        return view('admin.news.index', ['newsList' => $this->newsList]);
     }
 
     public function create()
