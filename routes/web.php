@@ -5,6 +5,8 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\FormController as AdminFormController;
+use App\Http\Controllers\Admin\Form2Controller as AdminForm2Controller;
 
 Route::get('/', [NewsController::class, 'index'])
 ->name('home');
@@ -32,6 +34,9 @@ Route::group(['prefix' => '/admin', 'as' => 'admin.'],
         'store' => 'news.store',
         'create' => 'news.create'
     ]); 
+    Route::resource('/forms', AdminFormController::class);
+    Route::resource('/form2', AdminForm2Controller::class);
+    
 });
 
 

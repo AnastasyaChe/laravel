@@ -76,4 +76,9 @@ class Controller extends BaseController
         'religion',
         'economy'
     ];
+
+    public function getNewsList() 
+    {
+        return $this->newsList;
+    }
 }

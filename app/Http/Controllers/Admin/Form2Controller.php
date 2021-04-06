@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class NewsController extends Controller
+class Form2Controller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,13 +14,13 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('admin.news.index', ['newsList' => $this->newsList]);
+        //
     }
 
     public function create()
     {
          
-        return view('admin.news.create');
+        return view('admin.form2.create');
         
 
     }
@@ -28,13 +28,17 @@ class NewsController extends Controller
     
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => ['required', 'string', 'min:2'],
+            'tel' => ['required', 'int', 'min:11'],
+            'e-mail' => ['required', 'string', 'min:4'],
+
+        ]);
+
         $file = 'data.txt';
         
         $allowFields = $request->all();
         $fields = response()->json($allowFields);
-        // Пишем содержимое в файл,
-        // используя флаг FILE_APPEND для дописывания содержимого в конец файла
-        // и флаг LOCK_EX для предотвращения записи данного файла кем-нибудь другим в данное время
         file_put_contents($file, $fields, FILE_APPEND);
         
 
@@ -49,8 +53,8 @@ class NewsController extends Controller
      */
     public function show($id)
     {
-        return "<h2>Отобразить в адмимнке запись одной статьи с ID = {$id}</h2>";
-    }
+        //
+     }
 
     /**
      * Show the form for editing the specified resource.
@@ -60,7 +64,7 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        return "<h2>Редактирование в адмимнке записи одной статьи с ID = {$id}</h2>";
+        //
     }
 
     /**
