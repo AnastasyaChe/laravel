@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
     public function index() {
-       return view('categories', ['categoryList' => $this->categoryList]);
+        $categories = (new Category())->getCategories();
+        return view('news.categories.index', ['categories' => $categories]);
     }
     public function show (int $categoryid) {
         $newsOfCategory = [];
@@ -19,3 +21,4 @@ class CategoryController extends Controller
          return view('categoryShow', ['news' => $newsOfCategory]);
     }
 }
+

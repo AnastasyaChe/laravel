@@ -28,12 +28,7 @@ Route::group(['prefix' => '/admin', 'as' => 'admin.'],
     function() {
     Route::resource('/categories', AdminCategoryController::class);
          
-    Route::resource('/news', AdminNewsController::class)
-    ->names([
-        'index' => 'news.index',
-        'store' => 'news.store',
-        'create' => 'news.create'
-    ]); 
+    Route::resource('/news', AdminNewsController::class);
     Route::resource('/forms', AdminFormController::class);
     Route::resource('/form2', AdminForm2Controller::class);
     

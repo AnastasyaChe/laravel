@@ -24,16 +24,16 @@
     </tr>
     </thead>
     <tbody>
-    @forelse($newsList as $key=>$news)
+    @forelse($news as $newsItem)
     <tr>
-    <td>{{$key}}</td>
-    <td>{{$news['title']}}</td>
-    <td>{{now()}}</td>
+    <td>{{$newsItem->id}}</td>
+    <td>{{$newsItem->title}}</td>
+    <td>{{$newsItem->created_at}}</td>
     <td><a href="">Ред.</a>&nbsp;<a href="">Удал.</a></td>
     </tr>
     @empty
     <tr>
-        <td calspan="4">Новостей нет</td>
+        <td calspan="4"> Новостей нет</td>
     </tr>
     @endforelse
     </tbody></table>

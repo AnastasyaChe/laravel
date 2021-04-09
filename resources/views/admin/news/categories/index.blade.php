@@ -20,11 +20,11 @@
     </tr>
     </thead>
     <tbody>
-    @forelse($categoryList as $id => $category)
+    @forelse($categories as $category)
     <tr>
-    <td>{{$id}}</td> 
-    <td><a href="{{ route('admin.categories.show', ['category' => $id])}}">{{$category}}</a></td>
-    <td>{{now()}}</td>
+    <td>{{$category->id}}</td> 
+    <td>{{$category->title}}</td>
+    <td>{{$category-> created_at}}</td>
     <td><a href="">Ред.</a>&nbsp;<a href="">Удал.</a></td>
     </tr>
     @empty

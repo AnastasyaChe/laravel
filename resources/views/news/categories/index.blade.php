@@ -3,17 +3,13 @@
 <div class="row">
 <div class="col-lg-8 col-md-10 mx-auto">
       
-    @foreach($news as $newsItem) 
-     @php 
-      $url = route('news.show', ['id' => $newsItem->id]);
-     @endphp
-     
+    @foreach($categories as $category) 
+         
         <div class="post-preview">
-            <a href = '{{$url}}'> <h2 class="post-title"> {{$newsItem->title}} </h2>
-            <h3 class="post-subtitle"> {{$newsItem->text}}</h3>
-            </a>   
+            <a href = '#'> <h2 class="post-title"> {{$category->title}} </h2>
+            <h3 class="post-subtitle"> {{$category->description}} </h3></a>   
             <p class="post-meta">Опубликовал админ
-            {{$newsItem->created_at ?? now()}}&middot;</p>
+            {{$category->created_at ?? now()}}&middot;</p>
         </div>
     @endforeach
     

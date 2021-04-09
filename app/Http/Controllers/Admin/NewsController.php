@@ -4,17 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\News;
 
 class NewsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        return view('admin.news.index', ['newsList' => $this->newsList]);
+        $news = (new News())->getNews(true);
+        return view('admin.news.index', ['news' => $news]);
     }
 
     public function create()
