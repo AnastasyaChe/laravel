@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 
 class FormController extends Controller
@@ -14,7 +15,8 @@ class FormController extends Controller
      */
     public function index()
     {
-        //
+        $feedbacks = Feedback::get();
+        return view('admin.forms.index', ['feedbacks' => $feedbacks]);
     }
 
     public function create()
@@ -32,26 +34,17 @@ class FormController extends Controller
             'name' => ['required', 'string', 'min:2']
 
         ]);
-        $file = 'data.txt';
-        $allowFields = $request->all();
-        foreach($allowFields as $key => $item) {
-            $field = "\n" . $key . "=>" . $item . "\n" ;
-            file_put_contents($file, $field, FILE_APPEND);
+        $data = $request->only(['name', 'comment']);   
+        $feedback = Feedback::create($data); 
+        if($feedback) {
+            return redirect()->route('admin.forms.index')
+            ->with('success', 'Запись успешно добавлена');
         }
+        return back()->with('error', 'Не удалось добавить запись');
         
-        // $fields = response()->json($allowFields);
-        // file_put_contents($file, $fields, FILE_APPEND);
-        
+        }
 
-        return redirect()->route('admin.news.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         //
@@ -63,21 +56,23 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Feedback $form)
     {
-        //
+        return view('admin.forms.edit', ['form' => $form]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+    
+    public function update(Request $request, Feedback $form)
+    {$data = $request->only(['name', 'comment']);
+        $form->name = $data['name'];
+        $form->comment = $data['comment'];
+        $form->save();
+        if($form) {
+            return redirect()->route('admin.forms.index')
+            ->with('success', 'Запись успешно изменена');
+        }
+        return back()->with('error', 'Не удалось изменить запись');
+        
     }
 
     /**

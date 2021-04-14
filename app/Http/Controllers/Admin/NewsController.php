@@ -11,7 +11,8 @@ class NewsController extends Controller
     
     public function index()
     {
-        $news = (new News())->getNews(true);
+        $news = News::select(['id', 'title', 'text', 'created_at'])
+        ->get();
         return view('admin.news.index', ['news' => $news]);
     }
 

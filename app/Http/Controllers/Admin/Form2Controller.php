@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class Form2Controller extends Controller
@@ -14,7 +15,8 @@ class Form2Controller extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::get();
+        return view('admin.form2.index', ['orders' => $orders]);
     }
 
     public function create()
@@ -31,18 +33,17 @@ class Form2Controller extends Controller
         $request->validate([
             'name' => ['required', 'string', 'min:2'],
             'tel' => ['required', 'int', 'min:11'],
-            'e-mail' => ['required', 'string', 'min:4'],
+            'email' => ['required', 'string', 'min:4'],
 
         ]);
+        $data = $request->only(['id', 'name', 'tel', 'email', 'description', 'created_at']);   
+        $order = Order::create($data); 
+        if($order) {
+            return redirect()->route('admin.form2.index')
+            ->with('success', 'Запись успешно добавлена');
+        }
+        return back()->with('error', 'Не удалось добавить запись');
 
-        $file = 'data.txt';
-        
-        $allowFields = $request->all();
-        $fields = response()->json($allowFields);
-        file_put_contents($file, $fields, FILE_APPEND);
-        
-
-        return redirect()->route('admin.news.index');
     }
 
     /**
@@ -62,9 +63,9 @@ class Form2Controller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Order $form2)
     {
-        //
+        return view('admin.form2.edit', ['form2' => $form2]);
     }
 
     /**
@@ -74,9 +75,19 @@ class Form2Controller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Order $form2)
     {
-        //
+        $data = $request->only(['name', 'tel', 'email', 'description']);
+        $form2->name = $data['name'];
+        $form2->tel = $data['tel'];
+        $form2->email = $data['email'];
+        $form2->description = $data['description'];
+        $form2->save();
+        if($form2) {
+            return redirect()->route('admin.form2.index')
+            ->with('success', 'Запись успешно изменена');
+        }
+        return back()->with('error', 'Не удалось изменить запись');
     }
 
     /**

@@ -5,24 +5,33 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session as FacadesSession;
 
 class CategoryController extends Controller
 {
     
     public function index()
     {
-        $categories = (new Category())->getCategories(true);
+        $categories = Category::where('is_visible', true)->get();
         return view('admin.news.categories.index', ['categories' => $categories]);
     }
 
     public function create()
     {
-        //
+        return view('admin.news.categories.create');
     }
 
     public function store(Request $request)
     {
-        //
+        $data = $request->only(['title', 'description', 'is_visible']); 
+        $category = Category::create($data);
+        if($category) {
+            return redirect()->route('admin.categories.index')
+            ->with('success', 'Запись успешно добавлена');
+        }
+        return back()->with('error', 'Не удалось добавить запись');
     }
 
     public function show(int $category)
@@ -37,31 +46,29 @@ class CategoryController extends Controller
         return view('admin.news.categories.show', ['news' => $newsOfCategory]);
     }
 
-    public function edit(int $id)
+    public function edit(Category $category)
     {
-        return "<h2>Редактируем в админке список статей по категории с ID = {$id}</h2>";
+       return view('admin.news.categories.edit', ['category' => $category]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $data = $request->only(['title', 'description', 'is_visible']);
+        $category->title = $data['title'];
+        $category->description = $data['description'];
+        $category->save();
+        if($category) {
+            return redirect()->route('admin.categories.index')
+            ->with('success', 'Запись успешно изменена');
+        }
+        return back()->with('error', 'Не удалось изменить запись');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function destroy(int $category){
+        
+    $category = Category::findOrFail($category);
+    $category->delete();
+    return Redirect::route('admin.categories.index')
+    ->with ('success', "Deleted");
     }
 }

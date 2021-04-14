@@ -18,7 +18,7 @@
 </div>
 <div class="form-group">
 <label for="description">Комментарий/Отзыв</label>
-<textarea type="text" id="comment" name="comment" class="form-control"value="{{old('comment')}}"></textarea>
+<textarea type="text" id="comment" name="comment" class="form-control">{{old('comment')}}</textarea>
 </div>
 <br>
 <button type="submit" class="btn btn-success"> Сохранить</button>

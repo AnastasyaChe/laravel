@@ -18,11 +18,12 @@ Route::get('/news/show/{id}', [NewsController::class, 'show'])
 Route::get('/news', [NewsController::class, 'index'])
 ->name('news'); //это главная страница со всеми новостями
 
-Route::get('/categories', [CategoryController::class, 'index'])
-->name('categories'); //это главная страница со всеми категориями
 
+Route::get('/categories', [CategoryController::class, 'index'])
+->name('categories');
 Route::get('/categories/show/{id}', [CategoryController::class, 'show'])
-->name('category.show');
+->name('categories.show'); //это главная страница со всеми категориями
+
 
 Route::group(['prefix' => '/admin', 'as' => 'admin.'], 
     function() {

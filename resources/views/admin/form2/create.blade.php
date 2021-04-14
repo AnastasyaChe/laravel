@@ -22,11 +22,11 @@
 </div>
 <div class="form-group">
 <label for="title">E-mail</label>
-<input type="text" id="e-mail" name="e-mail" class="form-control" value="{{old('e-mail')}}">
+<input type="text" id="email" name="email" class="form-control" value="{{old('email')}}">
 </div>
 <div class="form-group">
 <label for="description">Что хотите получить?</label>
-<textarea type="text" id="description" name="description" class="form-control" value="{{old('description')}}"></textarea>
+<textarea type="text" id="description" name="description" class="form-control">{{old('description')}}</textarea>
 </div>
 <br>
 <button type="submit" class="btn btn-success"> Сохранить</button>

@@ -11,21 +11,16 @@ class Category extends Model
     use HasFactory;
     protected $table = 'categories';
 
-    public function getCategories(bool $isAdmin = false) {
-        if(!$isAdmin) {
-            return DB::table($this->table)
-            ->select(['id', 'title', 'description', 'created_at'])
-            ->where('is_visible', true)
-            ->get();
-        }
-        return DB::table($this->table)
-            ->select(['id', 'title', 'description','created_at'])
-            ->get();
-
-        
-    }
+    protected $fillable = [
+        'title', 'description', 'is_visible'];
+    protected $casts = [
+        'is_visible' => 'boolean'];
+    
 
     public function getCategoryById(int $id) {
         return DB::selectOne("SELECT * FROM categories WHERE id=:id", ['id'=>$id]);
+    }
+    public function news() {
+        return $this->hasMany(News::class, 'category_id', 'id');//создам связь с сущностью
     }
 }

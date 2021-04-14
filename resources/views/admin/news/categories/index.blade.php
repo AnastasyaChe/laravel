@@ -5,11 +5,13 @@
 <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Список категорий новостей</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        <a href="{{route('admin.categories.create')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-plus fa-sm text-white-50"></i> Добавить категорию</a>
     </div>
     <div class="row">
-    
+    @if(session()->has('success'))
+    <div class="alert alert-success">{{session()->get('success')}}</div>
+    @endif
     <table class="table table-bordered">
     <thead>
     <tr>
@@ -21,12 +23,21 @@
     </thead>
     <tbody>
     @forelse($categories as $category)
-    <tr>
+    <tr id="{{$category->id}}}">
     <td>{{$category->id}}</td> 
     <td>{{$category->title}}</td>
     <td>{{$category-> created_at}}</td>
-    <td><a href="">Ред.</a>&nbsp;<a href="">Удал.</a></td>
+    <td><a href="{{route('admin.categories.edit', ['category' => $category])}}">Ред.</a></td>
+    <td class=" text-right">
+        {!! Form::open([
+            'method' => 'DELETE',
+            'route' => ['admin.categories.destroy', $category->id]
+        ]) !!}
+            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+        {!! Form::close() !!}
+    </td>
     </tr>
+        
     @empty
     <tr>
         <td calspan="4">нет</td>
@@ -37,3 +48,4 @@
 
 </div>
 @endsection
+

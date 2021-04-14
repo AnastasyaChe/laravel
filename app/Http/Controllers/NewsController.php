@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\News;
+use App\Enums\NewsStatusEnum;
 
 class NewsController extends Controller
 {
     public function index() {
-        $news = (new News())->getNews(true);
+        $news = News::with('category')
+        ->where('status', NewsStatusEnum::PUBLISHED)
+        ->get();
        return view('welcome', ['news' => $news]);
     }
     public function show (int $id) {

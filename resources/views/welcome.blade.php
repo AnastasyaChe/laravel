@@ -13,7 +13,7 @@
             <h3 class="post-subtitle"> {{$newsItem->text}}</h3>
             </a>   
             <p class="post-meta">Опубликовал админ
-            {{$newsItem->created_at ?? now()}}&middot;</p>
+            {{$newsItem->created_at ?? now()}}&middot;<i>Категория:{{$newsItem->category->title}}</i></p>
         </div>
     @endforeach
     
