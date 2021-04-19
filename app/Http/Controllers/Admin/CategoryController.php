@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateCategory;
+use App\Http\Requests\UpdateCategory;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Contracts\Session\Session;
@@ -23,10 +25,9 @@ class CategoryController extends Controller
         return view('admin.news.categories.create');
     }
 
-    public function store(Request $request)
+    public function store(CreateCategory $request)
     {
-        $data = $request->only(['title', 'description', 'is_visible']); 
-        $category = Category::create($data);
+        $category = Category::create($request->validated());
         if($category) {
             return redirect()->route('admin.categories.index')
             ->with('success', 'Запись успешно добавлена');
@@ -51,9 +52,9 @@ class CategoryController extends Controller
        return view('admin.news.categories.edit', ['category' => $category]);
     }
 
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategory $request, Category $category)
     {
-        $data = $request->only(['title', 'description', 'is_visible']);
+        $data = $request->validated();
         $category->title = $data['title'];
         $category->description = $data['description'];
         $category->save();

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateNews;
+use App\Http\Requests\UpdateNews;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\News;
 
@@ -25,19 +28,15 @@ class NewsController extends Controller
     }
 
     
-    public function store(Request $request)
+    public function store(CreateNews $request)
     {
-        $file = 'data.txt';
-        
-        $allowFields = $request->all();
-        $fields = response()->json($allowFields);
-        // Пишем содержимое в файл,
-        // используя флаг FILE_APPEND для дописывания содержимого в конец файла
-        // и флаг LOCK_EX для предотвращения записи данного файла кем-нибудь другим в данное время
-        file_put_contents($file, $fields, FILE_APPEND);
-        
-
-        return redirect()->route('admin.news.index');
+        $news = News::create($request->validated()); //создаем в таблице строчку с отвалидированными данные
+        if($news) {
+            return redirect()->route('admin.news.index')->with('success', trans('messages.admin.news.create.success'));
+        }
+        //with ('success', "Запись успешно добавилась") чтобы не писать сообщения,
+        // создаем файл resources/lang/ru/messages.php
+        // trans можно заменить __
     }
 
     /**
@@ -57,9 +56,14 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        return "<h2>Редактирование в адмимнке записи одной статьи с ID = {$id}</h2>";
+    public function edit(News $news)
+    { 
+        $categories = Category:: all();
+
+        return view('admin.news.edit', [
+            'news' => $news,
+            'categories'=>$categories
+        ]);
     }
 
     /**
@@ -69,9 +73,15 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(UpdateNews $request, News $news) {
+        $news = $news->fill($request->validated());
+        $news->category_id = $request->validated()['category_id'];
+        if($news->save()) {
+            return redirect()->route('admin.news.index')
+            ->with('success', __('message.admin.news.update.success'));
+        }
+        return back()->with('error', __('message.admin.news.update.fail'));
+        
     }
 
     /**

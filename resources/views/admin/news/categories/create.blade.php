@@ -9,7 +9,12 @@
 
 <div class="form-group">
 <label for="title">Наименование</label>
-<input type="text" id="title" name="title" class="form-control" value="{{old('title')}}">
+<input type="text" id="title" name="title" @error('title') style="border:red 1px solid;" @enderror class="form-control" value="{{old('title')}}">
+@if($errors->has('title'))
+@foreach($errors->get('title') as $error)
+{{$error}}
+@endforeach
+@endif
 </div>
 
 <div class="form-group">

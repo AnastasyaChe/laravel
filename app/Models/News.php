@@ -13,7 +13,12 @@ class News extends Model
 {
     use HasFactory;
     protected $table = 'news';
-    
+    protected $fillable = ['
+    title', 
+    'description'
+];
+
+
     public function getNewsById(int $id) {
         return DB::table($this->table)
         ->select(['id', 'title', 'text', 'created_at'])
