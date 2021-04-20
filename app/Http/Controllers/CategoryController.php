@@ -3,19 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\News;
 
 class CategoryController extends Controller
 {
     public function index() {
-       return view('categories', ['categoryList' => $this->categoryList]);
+        $categories = Category::get();
+        return view('news.categories.index', ['categories' => $categories]);
     }
-    public function show (int $categoryid) {
-        $newsOfCategory = [];
-        foreach($this->newsList as $id =>$news) {
-            if ($news['categoryId'] == $categoryid) {
-                $newsOfCategory[] = $news;
-            }
-        }
-         return view('categoryShow', ['news' => $newsOfCategory]);
+    public function show (int $id) {
+        
+        $news = News::select(['news.id', 'news.title', 'news.text','news.created_at'])
+        ->with('category')
+        ->where('news.category_id', $id)
+        ->get();
+        
+        
+         return view('news.categories.show', ['news' => $news]);
     }
 }
+
