@@ -29,7 +29,7 @@
     <td>{{$newsItem->id}}</td>
     <td>{{$newsItem->title}}</td>
     <td>{{$newsItem->created_at}}</td>
-    <td><a href="{{route('admin.news.edit', ['news' =>$newsItem]}}">Ред.</a>&nbsp;<a href="">Удал.</a></td>
+    <td><a href="{{route('admin.news.edit', ['news' =>$newsItem])}}">Ред.</a>&nbsp;<a href="">Удал.</a></td>
     </tr>
     @empty
     <tr>
