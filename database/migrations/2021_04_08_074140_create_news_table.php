@@ -12,10 +12,12 @@ class CreateNewsTable extends Migration
             $table->id();
             $table->string('title', 190);
             $table->string('image', 191)->nullable();
-            $table->string('text')->nullable();
-            $table->string('slug', 191);
-            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
-            $table->foreignId('source_id')->constrained('sources')->cascadeOnDelete();
+            $table->text('text')->nullable();
+            $table->string('slug', 191)->nullable();
+            $table->unsignedBigInteger('category_id')->default(1);
+            $table->foreign('category_id')->references('id')->on('categories');
+            $table->unsignedBigInteger('source_id')->default(1);
+            $table->foreign('source_id')->references('id')->on('sources');
             $table->timestamps();
         });
     }

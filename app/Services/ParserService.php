@@ -13,20 +13,8 @@ class ParserService {
         {
             $xml = XmlParser::load($this->url);
             return $xml->parse([
-                'title' => [
-                    'uses' =>'channel.title'
-                ],
-                'link' => [
-                    'uses' => 'channel.link'
-                ],
-                'description' => [
-                    'uses' => 'channel.description'
-                ], 
-                'image' => [
-                    'uses' => 'channel.image.url'
-                ],
                 'news' => [
-                    'uses' => 'channel.item[title,link,guid,description,pubDate]'
+                    'uses' => 'channel.item[title,description]'
                 ]
             ]);
         }

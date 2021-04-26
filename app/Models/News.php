@@ -13,10 +13,11 @@ class News extends Model
 {
     use HasFactory;
     protected $table = 'news';
-    protected $fillable = ['
-    title', 
-    'description'
+    protected $fillable = [ 
+    'title', 
+    'text'
 ];
+
 
 
     public function getNewsById(int $id) {

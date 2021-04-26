@@ -12,8 +12,12 @@ class ParserController extends Controller
         $datas = ($service->setUrl('https://news.yandex.ru/army.rss')->parsing());
         $newsItems =$datas['news'];
         foreach($newsItems as $item) {
-            News::create($item);
-            return redirect()->route('admin.news.index');
+            News::create(array(
+                'title' => $item['title'],
+                'text' => $item['description']
+            ));
+            // // return redirect()->route('admin.news.index');
         }
+        echo "textt";
     }
 }
