@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\FormController as AdminFormController;
 use App\Http\Controllers\Admin\Form2Controller as AdminForm2Controller;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\SocialiteController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/news', [NewsController::class, 'index'])
@@ -35,7 +36,7 @@ Route::get('/categories', [CategoryController::class, 'index'])
 Route::get('/categories/show/{id}', [CategoryController::class, 'show'])
 ->name('categories.show'); //это главная страница со всеми категориями
 
-
+Route::get('/parsing', App\HTTP\Controllers\ParserController::class);
 
 
 Route::group(['middleware' => 'auth'], function()
@@ -57,7 +58,10 @@ Route::group(['middleware' => 'auth'], function()
     });
 
 });
-
+Route::group(['middleware'=>'guest', 'prefix'=>'socialite'], function() {
+    Route:: get('/auth/vk', [SocialiteController::class, 'init'])->name('vk.init');
+    Route::get('/auth/vk/callback', [SocialiteController::class, 'callback'])->name('vk.callback');
+});
 
 
 
