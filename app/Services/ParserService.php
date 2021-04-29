@@ -1,9 +1,11 @@
 <?php declare(strict_types=1);
 namespace App\Services;
 
+use Illuminate\Support\Facades\Storage;
 use Orchestra\Parser\Xml\Facade as XmlParser;
 
-class ParserService {
+class ParserService 
+{
     protected string $url;
     public function setUrl(string $url) {
         $this->url = $url;
@@ -12,11 +14,15 @@ class ParserService {
     public function parsing() {
         {
             $xml = XmlParser::load($this->url);
-            return $xml->parse([
+            $data = $xml->parse([
                 'news' => [
-                    'uses' => 'channel.item[title,description]'
+                    'uses' => 'channel.item[title,description,pubDate]'
                 ]
             ]);
+            $e = explode("/", $this->url);
+            $fileName = end($e);
+        Storage::append('parsing/' . $fileName . ".txt", json_encode($data));
+        return $data;
         }
     }
 }

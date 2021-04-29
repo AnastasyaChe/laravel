@@ -3,8 +3,9 @@
 
 <div class="row">
 <div class="col-8 offset-2">
-<h2 id='name'>Добавить новость</h2>
-<form method="post" action="{{route('admin.news.store')}}">
+<h2 id='name'>Редактировать новость</h2>
+<form method="post" action="{{route('admin.news.store')}}" 
+    enctype="multipart/form-data">
 @csrf
 <div class="form-group">
 <label for="category">Категория</label>
@@ -18,15 +19,16 @@ selected @endif> {{$category->title}}</option>
 </div>
 <div class="form-group">
 <label for="title">Наименование</label>
-<input type="text" id="title" name="title" class="form-control">
+<input type="text" id="title" name="title" class="form-control" value="{{$news->title}}">
 </div>
 <div class="form-group">
 <label for="image">Изображение</label>
-<input type="text" id="slug" name="slug" class="form-control">
+<img src="{{ \Storage::disk('public')->url($news->image) }}" style="width: 220px;">
+<input type="file" id="image" name="image" class="form-control">
 </div>
 <div class="form-group">
-<label for="description">Описание</label>
-<textarea type="file" id="image" name="image" class="form-control"></textarea>
+<label for="text">Описание</label>
+<textarea type="text" id="description" name="text" class="form-control">{{$news->text}}</textarea>
 </div>
 <br>
 <button type="submit" class="btn btn-success"> Сохранить</button>
@@ -35,3 +37,16 @@ selected @endif> {{$category->title}}</option>
 </div>
 
 @endsection
+@push('js')
+<script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create( document.querySelector( '#description') )
+            .then( editor => {
+                console.log( editor );
+                } )
+            .catch( error => {
+                console.error( error );
+                } );
+</script>
+@endpush

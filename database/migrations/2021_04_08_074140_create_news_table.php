@@ -19,6 +19,8 @@ class CreateNewsTable extends Migration
             $table->unsignedBigInteger('source_id')->default(1);
             $table->foreign('source_id')->references('id')->on('sources');
             $table->timestamps();
+
+           // $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
         });
     }
 

@@ -73,9 +73,20 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateNews $request, News $news) {
-        $news = $news->fill($request->validated());
-        $news->category_id = $request->validated()['category_id'];
+    public function update(UpdateNews $request, News $news)
+    {
+        $validated = $request->validated();
+        //todo: move to service 
+        if($request->hasFile('image')) {
+            $image = $request->file('image');
+            $originalName = $image->getClientOriginalName();
+            $originalExt = $image->getClientOriginalExtension();
+            $fileName = uniqid();
+            $filelink = $image->storeAs('news', $fileName . '.' . $originalExt, 'public');
+            $validated['image'] = $filelink;
+        }
+        $news = $news->fill($validated);
+        $news->category_id = $validated['category_id'];
         if($news->save()) {
             return redirect()->route('admin.news.index')
             ->with('success', __('message.admin.news.update.success'));

@@ -26,7 +26,8 @@ class UpdateNews extends FormRequest
         return [
             'category_id' => ['requested', 'numeric'],
             'title' =>  ['requested', 'string', 'min:2'],
-            'description' =>  ['sometimes'],
+            'text' =>  ['sometimes'],
+            'image' => ['sometimes', 'image:jpg,jpeg,png']
         ];
     }
 }
